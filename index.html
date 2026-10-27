@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frazioni Generatrici - Esplora e Impara!</title>
+    <!-- 
+      APP DIDATTICA: LE FRAZIONI GENERATRICI
+      Target: Scuola Secondaria di I Grado (Classe 2ª - 13 anni)
+      Linguaggio: Matematica formale italiana con notazione a trattino (overline) per il periodo
+      Funzionamento: 100% Offline (Senza dipendenze esterne o librerie di terze parti)
+    -->
+    <style>
+        /* ==========================================================================
+           1. STILI GENERALI E TEMA CROMATICO
+           ========================================================================== */
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #eef2ff;
+            --primary-dark: #3730a3;
+            --secondary: #0d9488;
+            --secondary-light: #ccfbf1;
+            --accent: #f59e0b;
+            --accent-light: #fef3c7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        /* Container Principale Responsivo */
+        .app-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* Header Principale */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+            color: white;
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        header h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .offline-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Navigazione a Schede (Tabs) */
+        nav.tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-btn {
+            background: white;
+            border: 2px solid var(--border-color);
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Sezioni di Contenuto */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card Generiche */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card h2 {
+            color: var(--primary-dark);
+            margin-bottom: 14px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card h3 {
+            color: var(--text-main);
+            margin: 16px 0 10px 0;
+            font-size: 1.1rem;
+        }
+
+        /* STILI PER LA SIMBOLOGIA MATEMATICA CORRETTA */
+        .overline {
+            text-decoration: overline;
+            text-decoration-thickness: 2px;
+            font-weight: bold;
+            display: inline-block;
+            padding-top: 1px;
+        }
+
+        .math-symbol {
+            font-family: "Cambria Math", "Times New Roman", serif;
+            font-style: italic;
+        }
+
+        .math-op {
+            font-weight: bold;
+            padding: 0 4px;
+        }
+
+        /* Scrittura Matematica delle Frazioni in CSS */
+        .math-frac {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 6px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+        .math-frac .num {
+            border-bottom: 2px solid currentColor;
+            padding-bottom: 3px;
+        }
+        .math-frac .den {
+            padding-top: 3px;
+        }
+
+        /* Badges e Categorie di Decimali */
+        .type-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .tag-finito { background-color: #dbeafe; color: #1e40af; }
+        .tag-semplice { background-color: #fef3c7; color: #92400e; }
+        .tag-misto { background-color: #fce7f3; color: #9d174d; }
+
+        /* Form di Input e Controlli */
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        input[type="text"], input[type="number"], select {
+            padding: 10px 14px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background-color: #64748b;
+        }
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: #451a03;
+        }
+        .btn-accent:hover {
+            background-color: #d97706;
+            color: white;
+        }
+
+        /* Layout a Passi Guidati (Stepper) */
+        .step-box {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-top: 14px;
+            transition: all 0.3s;
+        }
+
+        .step-box.active-step {
+            background: white;
+            border-style: solid;
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        /* Riquadro del Feedback Formativo */
+        .feedback-box {
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            margin-top: 14px;
+            font-weight: 600;
+            display: none;
+        }
+        .feedback-box.correct {
+            display: block;
+            background-color: var(--success-light);
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        .feedback-box.error {
+            display: block;
+            background-color: var(--danger-light);
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        .feedback-box.info {
+            display: block;
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            border: 1px solid #c7d2fe;
+        }
+
+        /* Riquadro di Evidenziazione Cifre */
+        .highlight-digit-box {
+            display: flex;
+            gap: 12px;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+        .digit-pill {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-align: center;
+        }
+        .pill-intera { background: #dbeafe; color: #1e3a8a; border: 1px solid #bfdbfe; }
+        .pill-antiperiodo { background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }
+        .pill-periodo { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+
+        /* Sezione Esercizi Interattivi */
+        .exercise-card {
+            border: 2px solid var(--primary-light);
+            background: #fafafa;
+        }
+
+        .hint-accordion {
+            margin-top: 10px;
+            background: #fffbebf5;
+            border: 1px solid #fde68a;
+            border-radius: var(--radius-md);
+            padding: 12px;
+            font-size: 0.9rem;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            background: var(--primary-light);
+            padding: 12px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .score-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .score-val {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+        .score-lbl {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* Guida Insegnante */
+        .teacher-note {
+            background: #f0fdf4;
+            border-left: 4px solid var(--success);
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            margin: 10px 0;
+        }
+
+        /* Responsive Design per Smartphone */
+        @media (max-width: 600px) {
+            .app-container { padding: 8px; }
+            header { padding: 16px; text-align: center; justify-content: center; }
+            .input-group { flex-direction: column; align-items: stretch; }
+            input[type="text"], input[type="number"], select, .btn { width: 100%; }
+            .math-frac { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- HEADER DELL'APPLICAZIONE -->
+    <header>
+        <div>
+            <h1>📐 Frazioni Generatrici</h1>
+            <p style="font-size: 0.95rem; opacity: 0.9;">Scopri come trasformare i numeri decimali in frazioni, passo dopo passo!</p>
+        </div>
+        <div class="offline-badge">⚡ 100% Offline & Interattivo</div>
+    </header>
+
+    <!-- MENU A SCHEDE PER LA NAVIGAZIONE -->
+    <nav class="tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-intro')">💡 1. Impara i Concetti</button>
+        <button class="tab-btn" onclick="switchTab('tab-lab')">🔬 2. Laboratorio Guidato</button>
+        <button class="tab-btn" onclick="switchTab('tab-inverse')">🔄 3. Da Frazione a Decimale</button>
+        <button class="tab-btn" onclick="switchTab('tab-quiz')">🎯 4. Palestra & Quiz</button>
+        <button class="tab-btn" onclick="switchTab('tab-teacher')">👩‍🏫 5. Guida Docente</button>
+    </nav>
+
+    <!-- ==========================================================================
+         SEZIONE 1: INTRODUZIONE E CONCETTI CHIAVE
+         ========================================================================== -->
+    <div id="tab-intro" class="tab-content active">
+        <div class="card">
+            <h2>Cos'è una Frazione Generatrice?</h2>
+            <p>Hai mai notato che alcuni numeri decimali hanno cifre che si ripetono all'infinito, come <strong>0,3333...</strong>, mentre altri si fermano subito, come <strong>0,75</strong>?</p>
+            <p style="margin-top: 10px;">La <strong>frazione generatrice</strong> è la frazione che, quando dividi il numeratore per il denominatore, <em>genera</em> esattamente quel numero decimale!</p>
+            
+            <div style="display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap; justify-content: center; align-items: center;">
+                <div style="background: var(--primary-light); padding: 16px; border-radius: 12px; text-align: center; flex: 1; min-width: 200px;">
+                    <div style="font-size: 1.1rem; font-weight: bold; color: var(--primary-dark);">Frazione Generatrice</div>
+                    <div style="margin: 10px 0;">
+                        <span class="math-frac"><span class="num">3</span><span class="den">4</span></span>
+                    </div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">Eseguiamo la divisione: 3 ÷ 4</div>
+                </div>
+
+                <div style="font-size: 1.8rem; font-weight: bold; color: var(--primary);">➔</div>
+
+                <div style="background: var(--secondary-light); padding: 16px; border-radius: 12px; text-align: center; flex: 1; min-width: 200px;">
+                    <div style="font-size: 1.1rem; font-weight: bold; color: var(--secondary);">Numero Decimale</div>
+                    <div style="font-size: 1.6rem; font-weight: bold; margin: 10px 0; color: var(--text-main);">0,75</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">Risultato decimale finito</div>
+                </div>
+            </div>
+
+            <p><strong>Perché trasformiamo i decimali in frazioni?</strong></p>
+            <ul style="margin-left: 20px; margin-top: 8px;">
+                <li>Per eseguire calcoli esatti senza dover arrotondare i numeri periodici.</li>
+                <li>Per operare facilmente nelle espressioni matematiche.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>I Tre Tipi di Numeri Decimali</h2>
+            <p>Osserva come sono classificati i numeri decimali limitati e illimitati periodici:</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 16px;">
+                <div style="border: 2px solid #bfdbfe; background: #eff6ff; padding: 16px; border-radius: 12px;">
+                    <span class="type-tag tag-finito">1. Decimale Finito</span>
+                    <h3 style="margin-top: 8px; font-size: 1.3rem;">1,25</h3>
+                    <p style="font-size: 0.9rem;">Le cifre decimali terminano. Non c'è alcun periodo infinito.</p>
+                </div>
+
+                <div style="border: 2px solid #fde68a; background: #fffbeb; padding: 16px; border-radius: 12px;">
+                    <span class="type-tag tag-semplice">2. Periodico Semplice</span>
+                    <h3 style="margin-top: 8px; font-size: 1.3rem;">1,<span class="overline">3</span> <span style="font-size: 0.9rem; font-weight: normal; color: #64748b;">(cioè 1,3333...)</span></h3>
+                    <p style="font-size: 0.9rem;">Subito dopo la virgola inizia il <strong>periodo</strong> (indicato con il trattino alto), ossia la cifra o il gruppo di cifre che si ripete all'infinito.</p>
+                </div>
+
+                <div style="border: 2px solid #fbcfe8; background: #fdf2f8; padding: 16px; border-radius: 12px;">
+                    <span class="type-tag tag-misto">3. Periodico Misto</span>
+                    <h3 style="margin-top: 8px; font-size: 1.3rem;">1,2<span class="overline">45</span> <span style="font-size: 0.9rem; font-weight: normal; color: #64748b;">(cioè 1,24545...)</span></h3>
+                    <p style="font-size: 0.9rem;">Tra la virgola e il periodo è presente l'<strong>antiperiodo</strong> (la cifra 2), cioè una parte decimale che non si ripete.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Perché si usano i nove (9) e gli zeri (0)?</h2>
+            <p>La regola per trovare il denominatore ha una motivazione algebrica precisa. Osserviamo l'esempio con il numero <strong>0,<span class="overline">3</span></strong>:</p>
+            <div style="background: var(--primary-light); padding: 16px; border-radius: 8px; margin-top: 10px; font-size: 1rem;">
+                <p>1. Indichiamo con <span class="math-symbol">x</span> il numero decimale: <span class="math-symbol">x</span> = 0,3333...</p>
+                <p>2. Moltiplichiamo per 10 entrambi i membri: 10 · <span class="math-symbol">x</span> = 3,3333...</p>
+                <p>3. Sottraiamo la prima uguaglianza dalla seconda:</p>
+                <p style="margin-left: 20px; font-weight: bold; color: var(--primary-dark);">
+                    (10 · <span class="math-symbol">x</span>) - <span class="math-symbol">x</span> = 3,3333... - 0,3333...
+                </p>
+                <p style="margin-left: 20px; font-weight: bold; color: var(--primary-dark);">
+                    9 · <span class="math-symbol">x</span> = 3
+                </p>
+                <p>4. Ricaviamo infine la frazione: 
+                    <span class="math-symbol">x</span> = 
+                    <span class="math-frac"><span class="num">3</span><span class="den">9</span></span> 
+                    = 
+                    <span class="math-frac"><span class="num">1</span><span class="den">3</span></span>
+                </p>
+                <p style="margin-top: 8px; font-size: 0.9rem; color: var(--primary-dark);">
+                    <strong>Conclusione:</strong> Il numero <strong>9</strong> nasce dalla sottrazione (10 - 1 = 9), la quale permette di cancellare completamente la parte periodica infinita!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         SEZIONE 2: LABORATORIO GUIDATO PASSO-PASSO (DECIMALE -> FRAZIONE)
+         ========================================================================== -->
+    <div id="tab-lab" class="tab-content">
+        <div class="card">
+            <h2>🔬 Laboratorio Guidato di Scomposizione</h2>
+            <p>Inserisci un numero decimale. Per indicare le cifre del periodo puoi scriverle tra parentesi tonde, ad esempio: <code>0,(3)</code> per 0,<span class="overline">3</span> oppure <code>1,2(45)</code> per 1,2<span class="overline">45</span> oppure <code>2,5</code> per un decimale finito.</p>
+            
+            <div class="input-group" style="margin-top: 16px;">
+                <label for="lab-input">Numero Decimale:</label>
+                <input type="text" id="lab-input" value="1,2(45)" placeholder="Es: 1,2(45) o 0,(3) o 2,5" style="width: 200px; font-weight: bold; text-align: center;">
+                <button class="btn" onclick="analizzaEScomponi()">🔍 Analizza Passo Passo</button>
+            </div>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;">
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); align-self: center;">Esempi rapidi:</span>
+                <button class="btn btn-outline" style="padding: 4px 10px; font-size: 0.85rem;" onclick="setLabValue('2,5')">2,5 (Finito)</button>
+                <button class="btn btn-outline" style="padding: 4px 10px; font-size: 0.85rem;" onclick="setLabValue('0,(3)')">0,<span class="overline">3</span> (Semplice)</button>
+                <button class="btn btn-outline" style="padding: 4px 10px; font-size: 0.85rem;" onclick="setLabValue('1,2(45)')">1,2<span class="overline">45</span> (Misto)</button>
+            </div>
+
+            <!-- ESITO ANALISI ANATOMIA DEL NUMERO -->
+            <div id="lab-result-area" style="display: none; margin-top: 20px;">
+                
+                <!-- PASSO A: Riconoscimento Parti -->
+                <div class="step-box active-step">
+                    <div class="step-header">
+                        <div class="step-number">A</div>
+                        <span>Anatomia del Numero e Classificazione</span>
+                    </div>
+                    <p style="margin-bottom: 8px;">
+                        Scrittura formale con trattino di periodo: <strong style="font-size: 1.2rem;" id="lab-formatted-display">--</strong>
+                    </p>
+                    <p>Tipologia individuata: <span id="lab-type-tag" class="type-tag">--</span></p>
+                    
+                    <div class="highlight-digit-box">
+                        <div class="digit-pill pill-intera">
+                            Parte Intera: <span id="val-intera">--</span>
+                        </div>
+                        <div class="digit-pill pill-antiperiodo" id="box-antiperiodo">
+                            Antiperiodo: <span id="val-antiperiodo">--</span>
+                        </div>
+                        <div class="digit-pill pill-periodo" id="box-periodo">
+                            Periodo: <span id="val-periodo">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASSO B: Costruzione Numeratore -->
+                <div class="step-box active-step">
+                    <div class="step-header">
+                        <div class="step-number">B</div>
+                        <span>Costruzione del Numeratore</span>
+                    </div>
+                    <p id="num-explanation">--</p>
+                    <div style="background: white; padding: 12px; border-radius: 8px; margin-top: 8px; border: 1px solid var(--border-color); font-size: 1.1rem; color: var(--primary-dark);">
+                        Numeratore = <span id="num-formula">--</span> = <strong><span id="num-result">--</span></strong>
+                    </div>
+                </div>
+
+                <!-- PASSO C: Costruzione Denominatore -->
+                <div class="step-box active-step">
+                    <div class="step-header">
+                        <div class="step-number">C</div>
+                        <span>Costruzione del Denominatore</span>
+                    </div>
+                    <p id="den-explanation">--</p>
+                    <div style="background: white; padding: 12px; border-radius: 8px; margin-top: 8px; border: 1px solid var(--border-color); font-size: 1.1rem; color: var(--primary-dark);">
+                        Denominatore = <strong><span id="den-result">--</span></strong>
+                    </div>
+                </div>
+
+                <!-- PASSO D: Semplificazione e MCD -->
+                <div class="step-box active-step">
+                    <div class="step-header">
+                        <div class="step-number">D</div>
+                        <span>Semplificazione (Riduzione ai Minimi Termini)</span>
+                    </div>
+                    <p id="mcd-explanation">--</p>
+                    
+                    <div style="display: flex; align-items: center; gap: 16px; margin-top: 14px; flex-wrap: wrap;">
+                        <div>
+                            Frazione Ottenuta: 
+                            <span class="math-frac"><span class="num" id="frac-init-num">--</span><span class="den" id="frac-init-den">--</span></span>
+                        </div>
+                        <div style="font-size: 1.4rem; color: var(--primary);">➔</div>
+                        <div>
+                            Divisione per M.C.D. (<span id="mcd-val">--</span>):
+                        </div>
+                        <div style="font-size: 1.4rem; color: var(--primary);">➔</div>
+                        <div style="background: var(--success-light); padding: 8px 16px; border-radius: 10px; border: 2px solid var(--success);">
+                            <strong>Frazione Generatrice Ridotta:</strong> 
+                            <span class="math-frac" style="font-size: 1.3rem; color: #065f46;">
+                                <span class="num" id="frac-final-num">--</span>
+                                <span class="den" id="frac-final-den">--</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prova Pratica di Verifica -->
+                <div class="feedback-box info" style="margin-top: 20px;">
+                    💡 <strong>Verifica Aritmetica:</strong><br>
+                    Eseguendo la divisione <span id="check-num">--</span> ÷ <span id="check-den">--</span> si ottiene esattamente il numero decimale di partenza: <strong id="check-dec">--</strong>.
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         SEZIONE 3: MODALITÀ INVERSA (DA FRAZIONE A DECIMALE)
+         ========================================================================== -->
+    <div id="tab-inverse" class="tab-content">
+        <div class="card">
+            <h2>🔄 Modalità Inversa: Dalla Frazione al Decimale</h2>
+            <p>Ogni frazione genera un numero decimale mediante la divisione tra Numeratore e Denominatore (Numeratore ÷ Denominatore).</p>
+            
+            <div style="background: var(--primary-light); padding: 18px; border-radius: var(--radius-md); margin: 16px 0; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                <div>
+                    <span style="font-weight: 700; font-size: 0.9rem; color: var(--text-muted); display: block;">Frazione da convertire:</span>
+                    <span class="math-frac" style="font-size: 1.8rem; color: var(--primary-dark);">
+                        <span class="num" id="inv-num">7</span>
+                        <span class="den" id="inv-den">6</span>
+                    </span>
+                </div>
+                
+                <button class="btn btn-outline" onclick="generateNewInverseProblem()">🎲 Nuova Frazione</button>
+            </div>
+
+            <div class="input-group">
+                <label for="inv-user-type">1. Quale tipo di decimale viene generato?</label>
+                <select id="inv-user-type">
+                    <option value="">-- Seleziona la tipologia --</option>
+                    <option value="finito">Decimale Finito</option>
+                    <option value="semplice">Periodico Semplice</option>
+                    <option value="misto">Periodico Misto</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="inv-user-dec">2. Scrivi il risultato della divisione:</label>
+                <input type="text" id="inv-user-dec" placeholder="Es: 1,1(6) oppure 1,1666..." style="width: 220px;">
+                <span style="font-size: 0.85rem; color: var(--text-muted);">(Usa le parentesi per il periodo)</span>
+            </div>
+
+            <button class="btn btn-accent" onclick="checkInverseAnswer()">Verifica Risposta</button>
+
+            <div id="inv-feedback" class="feedback-box"></div>
+
+            <!-- GUIDA ALLA DIVISIONE IN COLONNA -->
+            <div id="inv-division-steps" style="display: none; margin-top: 20px; background: white; border: 1px solid var(--border-color); padding: 16px; border-radius: var(--radius-md);">
+                <h3>📊 Calcolo della Divisione</h3>
+                <div id="inv-division-details" style="line-height: 1.8; color: var(--text-main); margin-top: 10px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         SEZIONE 4: PALESTRA DI ESERCIZI CON QUIZ E FEEDBACK
+         ========================================================================== -->
+    <div id="tab-quiz" class="tab-content">
+        <!-- SCOREBOARD PROGRESSI -->
+        <div class="score-board">
+            <div class="score-item">
+                <span class="score-val" id="score-correct">0</span>
+                <span class="score-lbl">Esercizi Completi</span>
+            </div>
+            <div class="score-item">
+                <span class="score-val" id="score-streak">0 🔥</span>
+                <span class="score-lbl">Serie Corrente</span>
+            </div>
+            <div class="score-item">
+                <span class="score-val" id="score-badge">🌱 Novizio</span>
+                <span class="score-lbl">Livello</span>
+            </div>
+        </div>
+
+        <div class="card exercise-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+                <h2>🎯 Sfida: Calcola la Frazione Generatrice</h2>
+                <span class="type-tag tag-misto" id="quiz-target-tag">Periodico Misto</span>
+            </div>
+
+            <p style="font-size: 1.1rem; margin-bottom: 16px;">
+                Dato il numero decimale: <strong style="font-size: 1.6rem; color: var(--primary-dark); margin-left: 8px;" id="quiz-decimal-display">1,2<span class="overline">45</span></strong>
+            </p>
+
+            <!-- FORM COMPILAZIONE STUDENTI -->
+            <div style="background: white; padding: 20px; border-radius: var(--radius-md); border: 2px solid var(--border-color);">
+                <p style="font-weight: 700; margin-bottom: 10px;">Inserisci i valori dei passaggi:</p>
+                
+                <div class="input-group">
+                    <label>A. Sottrazione al Numeratore:</label>
+                    <input type="number" id="quiz-in-num1" placeholder="Tutto senza virgola" style="width: 160px; text-align: center;">
+                    <span style="font-weight: bold; font-size: 1.2rem;">-</span>
+                    <input type="number" id="quiz-in-num2" placeholder="Parte non periodica" style="width: 160px; text-align: center;">
+                </div>
+
+                <div class="input-group">
+                    <label>B. Denominatore Grezzo:</label>
+                    <input type="number" id="quiz-in-den" placeholder="Es: 990" style="width: 140px; text-align: center;">
+                </div>
+
+                <div class="input-group" style="margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+                    <label>C. Frazione Generatrice Ridotta ai Minimi Termini:</label>
+                    <div style="display: inline-flex; align-items: center; gap: 6px;">
+                        <input type="number" id="quiz-in-final-num" placeholder="Numeratore" style="width: 110px; text-align: center;">
+                        <span style="font-size: 1.4rem; font-weight: bold;">/</span>
+                        <input type="number" id="quiz-in-final-den" placeholder="Denominatore" style="width: 110px; text-align: center;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+                    <button class="btn btn-accent" onclick="checkQuizAnswer()">Conferma Risposta</button>
+                    <button class="btn btn-outline" onclick="toggleHint()">💡 Richiedi Suggerimento</button>
+                    <button class="btn btn-secondary" onclick="generateNewQuiz()">⏭️ Prossimo Esercizio</button>
+                </div>
+
+                <!-- SUGGERIMENTO PROGRESSIVO -->
+                <div id="quiz-hint-box" class="hint-accordion" style="display: none;">
+                    <strong>💡 Suggerimento:</strong>
+                    <div id="quiz-hint-text" style="margin-top: 4px;">--</div>
+                </div>
+
+                <!-- FEEDBACK FORMATIVO DETTAGLIATO -->
+                <div id="quiz-feedback" class="feedback-box"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         SEZIONE 5: GUIDA DIDATTICA PER L'INSEGNANTE
+         ========================================================================== -->
+    <div id="tab-teacher" class="tab-content">
+        <div class="card">
+            <h2>👩‍🏫 Guida Didattica per l'Insegnante</h2>
+            <p>L'applicazione risponde al livello cognitivo <strong>DOK 2 (Skill / Concept)</strong> della Tassonomia di Webb: accompagna lo studente nell'applicazione delle procedure matematiche promuovendo la comprensione della struttura posizionale delle cifre.</p>
+
+            <h3 style="color: var(--primary-dark);">🎯 Obiettivi di Apprendimento (Classe 2ª Scuola Sec. I Grado)</h3>
+            <ul style="margin-left: 20px; margin-bottom: 16px;">
+                <li>Riconoscere e classificare numeri decimali finiti, periodici semplici e periodici misti.</li>
+                <li>Distinguere la parte intera, l'antiperiodo e il periodo all'interno della scrittura decimale.</li>
+                <li>Applicare l'algoritmo per la determinazione del numeratore e del denominatore della frazione generatrice.</li>
+                <li>Eseguire la riduzione della frazione ai minimi termini calcolando il Massimo Comune Divisore (M.C.D.).</li>
+            </ul>
+
+            <h3 style="color: var(--primary-dark);">⚠️ Errori Frequenti e Strategie di Recupero</h3>
+            
+            <div class="teacher-note">
+                <strong>1. Errore nella sottrazione al numeratore (Periodici Misti)</strong><br>
+                <em>Errore tipico:</em> Lo studente sottrae solo la parte intera anziché l'intera parte non periodica (parte intera + antiperiodo). Es: per 1,2<span class="overline">45</span> calcola 1245 - 1 anziché 1245 - 12.<br>
+                <em>Intervento applicativo:</em> Il laboratorio guidato colora in modo differenziato la zona non periodica (blu/arancione) rispetto alla zona periodica (verde).
+            </div>
+
+            <div class="teacher-note">
+                <strong>2. Errore nel numero di zeri al denominatore</strong><br>
+                <em>Errore tipico:</em> Omissione degli zeri corrispondenti alle cifre dell'antiperiodo.<br>
+                <em>Intervento applicativo:</em> L'app visualizza esplicitamente la regola: <strong>Tanti 9 quante sono le cifre del periodo, tanti 0 quante sono le cifre dell'antiperiodo.</strong>
+            </div>
+
+            <div class="teacher-note">
+                <strong>3. Omessa riduzione ai minimi termini</strong><br>
+                <em>Errore tipico:</em> Lo studente arresta la procedura alla frazione grezza (es. 1233/990).<br>
+                <em>Intervento applicativo:</em> Nella sezione D del Laboratorio e nei Quiz viene richiesto esplicitamente il calcolo del M.C.D. per ottenere la frazione ridotta.
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="resetLocalStorageProgress()">🗑️ Azzera Registro Progressi (Reset LocalStorage)</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ==========================================================================
+     LOGICA JAVASCRIPT (100% VANILLA JS - OFFLINE)
+     ========================================================================== -->
+<script>
+/* ==========================================================================
+   STATO DELL'APPLICAZIONE E SALVATAGGIO LOCALE
+   ========================================================================== */
+let appState = {
+    solvedCount: 0,
+    streak: 0,
+    currentQuiz: null,
+    hintStage: 0
+};
+
+window.onload = function() {
+    loadProgress();
+    analizzaEScomponi();
+    generateNewQuiz();
+    generateNewInverseProblem();
+};
+
+function saveProgress() {
+    localStorage.setItem('frazioni_app_progress_v2', JSON.stringify({
+        solvedCount: appState.solvedCount,
+        streak: appState.streak
+    }));
+    updateScoreUI();
+}
+
+function loadProgress() {
+    const saved = localStorage.getItem('frazioni_app_progress_v2');
+    if (saved) {
+        try {
+            const data = JSON.parse(saved);
+            appState.solvedCount = data.solvedCount || 0;
+            appState.streak = data.streak || 0;
+        } catch (e) { console.error("Errore nel caricamento dei dati", e); }
+    }
+    updateScoreUI();
+}
+
+function resetLocalStorageProgress() {
+    if (confirm("Confermi di voler azzerare i punteggi e i progressi salvati?")) {
+        localStorage.removeItem('frazioni_app_progress_v2');
+        appState.solvedCount = 0;
+        appState.streak = 0;
+        updateScoreUI();
+        alert("Progressi azzerati con successo.");
+    }
+}
+
+function updateScoreUI() {
+    document.getElementById('score-correct').innerText = appState.solvedCount;
+    document.getElementById('score-streak').innerText = appState.streak + ' 🔥';
+    
+    let badge = '🌱 Novizio';
+    if (appState.solvedCount >= 5) badge = '⭐ Apprendista';
+    if (appState.solvedCount >= 12) badge = '🚀 Esperto di 2ª Media';
+    if (appState.solvedCount >= 25) badge = '👑 Maestro delle Frazioni';
+    document.getElementById('score-badge').innerText = badge;
+}
+
+/* ==========================================================================
+   NAVIGAZIONE TRA LE SCHEDE
+   ========================================================================== */
+function switchTab(tabId) {
+    const tabs = document.querySelectorAll('.tab-content');
+    const btns = document.querySelectorAll('.tab-btn');
+    
+    tabs.forEach(t => t.classList.remove('active'));
+    btns.forEach(b => b.classList.remove('active'));
+    
+    document.getElementById(tabId).classList.add('active');
+    
+    const indexMap = { 'tab-intro': 0, 'tab-lab': 1, 'tab-inverse': 2, 'tab-quiz': 3, 'tab-teacher': 4 };
+    if (btns[indexMap[tabId]]) {
+        btns[indexMap[tabId]].classList.add('active');
+    }
+}
+
+/* ==========================================================================
+   FUNZIONI MATEMATICHE E FORMATTATORE NOTAZIONE PERIODICA
+   ========================================================================== */
+
+// Calcolo del Massimo Comune Divisore (Algoritmo di Euclide)
+function getMCD(a, b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+    while (b) {
+        let t = b;
+        b = a % b;
+        a = t;
+    }
+    return a;
+}
+
+// Converte stringhe di tipo 1,2(45) in HTML con notazione trattino (overline)
+function formatDecimalHTML(intera, antiperiodo, periodo) {
+    let html = intera;
+    if (antiperiodo || periodo) {
+        html += ',' + antiperiodo;
+    }
+    if (periodo) {
+        html += `<span class="overline">${periodo}</span>`;
+    }
+    return html;
+}
+
+// Analizzatore delle stringhe decimali (Parser)
+function parseDecimalString(str) {
+    str = str.replace(/\s+/g, '').replace('.', ',');
+    
+    let intera = "0";
+    let antiperiodo = "";
+    let periodo = "";
+    let tipo = "finito";
+
+    const periodicMatch = str.match(/^(\d+)(?:,(\d*))?\((.+)\)$/);
+    
+    if (periodicMatch) {
+        intera = periodicMatch[1] || "0";
+        antiperiodo = periodicMatch[2] || "";
+        periodo = periodicMatch[3] || "";
+        tipo = (antiperiodo.length > 0) ? "misto" : "semplice";
+    } else {
+        const finiteMatch = str.match(/^(\d+)(?:,(\d+))?$/);
+        if (finiteMatch) {
+            intera = finiteMatch[1] || "0";
+            antiperiodo = finiteMatch[2] || "";
+            periodo = "";
+            tipo = "finito";
+        } else {
+            return null;
+        }
+    }
+
+    let numSenzaVirgolaStr = intera + antiperiodo + periodo;
+    let nonPeriodicoStr = intera + antiperiodo;
+
+    if (tipo === "finito") {
+        numSenzaVirgolaStr = intera + antiperiodo;
+        nonPeriodicoStr = "0";
+    }
+
+    let valNumSenzaVirgola = parseInt(numSenzaVirgolaStr, 10) || 0;
+    let valNonPeriodico = parseInt(nonPeriodicoStr, 10) || 0;
+
+    let numeratoreGrezzo = (tipo === "finito") ? valNumSenzaVirgola : (valNumSenzaVirgola - valNonPeriodico);
+
+    let denStr = "";
+    if (tipo === "finito") {
+        denStr = "1" + "0".repeat(antiperiodo.length);
+    } else {
+        denStr = "9".repeat(periodo.length) + "0".repeat(antiperiodo.length);
+    }
+    let denominatoreGrezzo = parseInt(denStr, 10) || 1;
+
+    let mcd = getMCD(numeratoreGrezzo, denominatoreGrezzo);
+
+    return {
+        originale: str,
+        intera: intera,
+        antiperiodo: antiperiodo,
+        periodo: periodo,
+        tipo: tipo,
+        htmlFormatted: formatDecimalHTML(intera, antiperiodo, periodo),
+        valNumSenzaVirgola: valNumSenzaVirgola,
+        valNonPeriodico: valNonPeriodico,
+        numeratoreGrezzo: numeratoreGrezzo,
+        denominatoreGrezzo: denominatoreGrezzo,
+        mcd: mcd,
+        numeratoreRidotto: numeratoreGrezzo / mcd,
+        denominatoreRidotto: denominatoreGrezzo / mcd
+    };
+}
+
+/* ==========================================================================
+   LABORATORIO GUIDATO (TAB 2)
+   ========================================================================== */
+function setLabValue(val) {
+    document.getElementById('lab-input').value = val;
+    analizzaEScomponi();
+}
+
+function analizzaEScomponi() {
+    const rawVal = document.getElementById('lab-input').value;
+    const data = parseDecimalString(rawVal);
+    const resultArea = document.getElementById('lab-result-area');
+
+    if (!data) {
+        alert("Formato non valido. Esempi ammessi: 1,2(45) oppure 0,(3) oppure 2,5.");
+        return;
+    }
+
+    resultArea.style.display = 'block';
+
+    // Mostra notazione formale
+    document.getElementById('lab-formatted-display').innerHTML = data.htmlFormatted;
+
+    // A. Anatomia
+    const typeTag = document.getElementById('lab-type-tag');
+    typeTag.innerText = data.tipo === 'finito' ? 'Decimale Finito' : (data.tipo === 'semplice' ? 'Periodico Semplice' : 'Periodico Misto');
+    typeTag.className = 'type-tag ' + (data.tipo === 'finito' ? 'tag-finito' : (data.tipo === 'semplice' ? 'tag-semplice' : 'tag-misto'));
+
+    document.getElementById('val-intera').innerText = data.intera;
+    
+    const boxAnti = document.getElementById('box-antiperiodo');
+    if (data.antiperiodo) {
+        boxAnti.style.display = 'inline-block';
+        document.getElementById('val-antiperiodo').innerText = data.antiperiodo;
+    } else {
+        boxAnti.style.display = 'none';
+    }
+
+    const boxPer = document.getElementById('box-periodo');
+    if (data.periodo) {
+        boxPer.style.display = 'inline-block';
+        document.getElementById('val-periodo').innerText = data.periodo;
+    } else {
+        boxPer.style.display = 'none';
+    }
+
+    // B. Numeratore
+    if (data.tipo === 'finito') {
+        document.getElementById('num-explanation').innerText = "Nei decimali finiti il numeratore è formato dall'intero numero privo di virgola.";
+        document.getElementById('num-formula').innerText = `${data.valNumSenzaVirgola}`;
+    } else {
+        document.getElementById('num-explanation').innerText = `Sottraiamo all'intero numero privo di virgola (${data.valNumSenzaVirgola}) la parte non periodica (${data.valNonPeriodico}).`;
+        document.getElementById('num-formula').innerText = `${data.valNumSenzaVirgola} - ${data.valNonPeriodico}`;
+    }
+    document.getElementById('num-result').innerText = data.numeratoreGrezzo;
+
+    // C. Denominatore
+    if (data.tipo === 'finito') {
+        document.getElementById('den-explanation').innerText = `Inseriamo la cifra 1 seguita da tanti 0 quante sono le cifre decimali (${data.antiperiodo.length} cifra/e decimali ➔ 1${'0'.repeat(data.antiperiodo.length)}).`;
+    } else if (data.tipo === 'semplice') {
+        document.getElementById('den-explanation').innerText = `Inseriamo tanti 9 quante sono le cifre del periodo (${data.periodo.length} cifra/e periodiche ➔ ${'9'.repeat(data.periodo.length)}).`;
+    } else {
+        document.getElementById('den-explanation').innerText = `Inseriamo tanti 9 quante sono le cifre del periodo (${data.periodo.length}) e tanti 0 quante le cifre dell'antiperiodo (${data.antiperiodo.length}) ➔ ${data.denominatoreGrezzo}.`;
+    }
+    document.getElementById('den-result').innerText = data.denominatoreGrezzo;
+
+    // D. M.C.D. e Semplificazione
+    document.getElementById('frac-init-num').innerText = data.numeratoreGrezzo;
+    document.getElementById('frac-init-den').innerText = data.denominatoreGrezzo;
+    document.getElementById('mcd-val').innerText = data.mcd;
+    document.getElementById('frac-final-num').innerText = data.numeratoreRidotto;
+    document.getElementById('frac-final-den').innerText = data.denominatoreRidotto;
+
+    if (data.mcd > 1) {
+        document.getElementById('mcd-explanation').innerText = `Il Massimo Comune Divisore tra ${data.numeratoreGrezzo} e ${data.denominatoreGrezzo} è ${data.mcd}. Dividendo numeratore e denominatore per ${data.mcd} otteniamo la frazione ridotta ai minimi termini.`;
+    } else {
+        document.getElementById('mcd-explanation').innerText = `Il M.C.D. è 1. La frazione è già ridotta ai minimi termini.`;
+    }
+
+    // Verifica
+    document.getElementById('check-num').innerText = data.numeratoreRidotto;
+    document.getElementById('check-den').innerText = data.denominatoreRidotto;
+    document.getElementById('check-dec').innerHTML = data.htmlFormatted;
+}
+
+/* ==========================================================================
+   MODALITÀ INVERSA (TAB 3)
+   ========================================================================== */
+let currentInverse = { num: 7, den: 6, decStr: "1,1(6)", htmlFormatted: '1,1<span class="overline">6</span>', tipo: "misto" };
+
+function generateNewInverseProblem() {
+    const presetInverses = [
+        { num: 3, den: 4, decStr: "0,75", htmlFormatted: "0,75", tipo: "finito" },
+        { num: 1, den: 3, decStr: "0,(3)", htmlFormatted: '0,<span class="overline">3</span>', tipo: "semplice" },
+        { num: 7, den: 6, decStr: "1,1(6)", htmlFormatted: '1,1<span class="overline">6</span>', tipo: "misto" },
+        { num: 5, den: 2, decStr: "2,5", htmlFormatted: "2,5", tipo: "finito" },
+        { num: 4, den: 11, decStr: "0,(36)", htmlFormatted: '0,<span class="overline">36</span>', tipo: "semplice" },
+        { num: 1, den: 6, decStr: "0,1(6)", htmlFormatted: '0,1<span class="overline">6</span>', tipo: "misto" }
+    ];
+    
+    currentInverse = presetInverses[Math.floor(Math.random() * presetInverses.length)];
+    
+    document.getElementById('inv-num').innerText = currentInverse.num;
+    document.getElementById('inv-den').innerText = currentInverse.den;
+    document.getElementById('inv-user-type').value = "";
+    document.getElementById('inv-user-dec').value = "";
+    
+    const fb = document.getElementById('inv-feedback');
+    fb.className = 'feedback-box';
+    fb.style.display = 'none';
+    document.getElementById('inv-division-steps').style.display = 'none';
+}
+
+function checkInverseAnswer() {
+    const uType = document.getElementById('inv-user-type').value;
+    const uDec = document.getElementById('inv-user-dec').value.trim().replace('.', ',');
+    const fb = document.getElementById('inv-feedback');
+
+    if (!uType || !uDec) {
+        fb.className = 'feedback-box error';
+        fb.innerText = '⚠️ Seleziona sia la tipologia del numero sia il valore decimale prima di verificare.';
+        return;
+    }
+
+    const isTypeCorrect = (uType === currentInverse.tipo);
+    const isDecCorrect = (uDec === currentInverse.decStr || uDec.includes(currentInverse.decStr.replace(/\(|\)/g, '')));
+
+    if (isTypeCorrect && isDecCorrect) {
+        fb.className = 'feedback-box correct';
+        fb.innerHTML = `🎉 <strong>Risposta Corretta!</strong><br>La frazione ${currentInverse.num}/${currentInverse.den} genera il numero decimale <strong>${currentInverse.htmlFormatted}</strong> (${currentInverse.tipo}).`;
+    } else {
+        fb.className = 'feedback-box error';
+        fb.innerHTML = `❌ <strong>Risposta non corretta.</strong><br>La frazione rappresenta un decimale <strong>${currentInverse.tipo}</strong> pari a <strong>${currentInverse.htmlFormatted}</strong>.<br>Consulta i passaggi della divisione in colonna sottostanti:`;
+    }
+
+    showDivisionDetails();
+}
+
+function showDivisionDetails() {
+    const divArea = document.getElementById('inv-division-steps');
+    const details = document.getElementById('inv-division-details');
+    divArea.style.display = 'block';
+
+    let n = currentInverse.num;
+    let d = currentInverse.den;
+
+    details.innerHTML = `
+        <p>Eseguiamo la divisione <strong>${n} ÷ ${d}</strong>:</p>
+        <ul style="margin-left: 20px;">
+            <li>${n} ÷ ${d} = ${Math.floor(n/d)} con resto ${n % d}</li>
+            <li>Poniamo la virgola al quoziente e moltiplichiamo il resto per 10 ➔ ${(n % d)*10} ÷ ${d}</li>
+            <li>Il reiterarsi del medesimo resto determina la formazione della cifra periodica.</li>
+        </ul>
+        <p style="margin-top: 8px;">Risultato finale: <strong>${currentInverse.htmlFormatted}</strong></p>
+    `;
+}
+
+/* ==========================================================================
+   PALESTRA DI ESERCIZI (TAB 4)
+   ========================================================================== */
+const quizBank = [
+    { decStr: "1,2(45)", intera: "1", anti: "2", per: "45", tipo: "misto", tag: "Periodico Misto" },
+    { decStr: "0,(3)", intera: "0", anti: "", per: "3", tipo: "semplice", tag: "Periodico Semplice" },
+    { decStr: "2,5", intera: "2", anti: "5", per: "", tipo: "finito", tag: "Decimale Finito" },
+    { decStr: "0,1(6)", intera: "0", anti: "1", per: "6", tipo: "misto", tag: "Periodico Misto" },
+    { decStr: "1,(45)", intera: "1", anti: "", per: "45", tipo: "semplice", tag: "Periodico Semplice" },
+    { decStr: "0,75", intera: "0", anti: "75", per: "", tipo: "finito", tag: "Decimale Finito" }
+];
+
+function generateNewQuiz() {
+    appState.hintStage = 0;
+    document.getElementById('quiz-hint-box').style.display = 'none';
+    document.getElementById('quiz-feedback').style.display = 'none';
+
+    document.getElementById('quiz-in-num1').value = "";
+    document.getElementById('quiz-in-num2').value = "";
+    document.getElementById('quiz-in-den').value = "";
+    document.getElementById('quiz-in-final-num').value = "";
+    document.getElementById('quiz-in-final-den').value = "";
+
+    const q = quizBank[Math.floor(Math.random() * quizBank.length)];
+    const parsed = parseDecimalString(q.decStr);
+    
+    appState.currentQuiz = {
+        meta: q,
+        parsed: parsed
+    };
+
+    document.getElementById('quiz-decimal-display').innerHTML = parsed.htmlFormatted;
+    document.getElementById('quiz-target-tag').innerText = q.tag;
+
+    if (parsed.tipo === 'finito') {
+        document.getElementById('quiz-in-num2').placeholder = "Non richiesto";
+        document.getElementById('quiz-in-num2').disabled = true;
+    } else {
+        document.getElementById('quiz-in-num2').placeholder = "Parte non periodica";
+        document.getElementById('quiz-in-num2').disabled = false;
+    }
+}
+
+function checkQuizAnswer() {
+    const q = appState.currentQuiz.parsed;
+    const fb = document.getElementById('quiz-feedback');
+
+    const uNum1 = parseInt(document.getElementById('quiz-in-num1').value, 10);
+    const uNum2 = parseInt(document.getElementById('quiz-in-num2').value, 10) || 0;
+    const uDen = parseInt(document.getElementById('quiz-in-den').value, 10);
+    const uFinalNum = parseInt(document.getElementById('quiz-in-final-num').value, 10);
+    const uFinalDen = parseInt(document.getElementById('quiz-in-final-den').value, 10);
+
+    if (isNaN(uNum1) || isNaN(uDen) || isNaN(uFinalNum) || isNaN(uFinalDen)) {
+        fb.className = 'feedback-box error';
+        fb.innerHTML = "⚠️ Compila tutti i campi richiesti prima di proseguire con la verifica.";
+        return;
+    }
+
+    let errors = [];
+
+    // 1. Verifica Denominatore
+    if (uDen !== q.denominatoreGrezzo) {
+        if (q.tipo === 'misto' && uDen === parseInt('9'.repeat(q.periodo.length))) {
+            errors.push("Hai omesso gli <strong>zeri dell'antiperiodo</strong> al denominatore.");
+        } else if (q.tipo === 'misto' && uDen === 100) {
+            errors.push("Nei numeri periodici il denominatore è formato dalle cifre <strong>9</strong> e <strong>0</strong>.");
+        } else {
+            errors.push(`Denominatore non corretto. Inserisci un 9 per ogni cifra del periodo (${q.periodo.length}) e un 0 per ogni cifra dell'antiperiodo (${q.antiperiodo.length}).`);
+        }
+    }
+
+    // 2. Verifica Numeratore
+    if (q.tipo !== 'finito') {
+        if (uNum1 !== q.valNumSenzaVirgola) {
+            errors.push(`Il primo termine deve corrispondere all'intero numero privo di virgola (${q.valNumSenzaVirgola}).`);
+        }
+        if (uNum2 !== q.valNonPeriodico) {
+            errors.push(`Il valore sottratto non è corretto. Occorre sottrarre l'intera parte non periodica (${q.valNonPeriodico}).`);
+        }
+    }
+
+    // 3. Verifica Frazione Ridotta
+    if (uFinalNum !== q.numeratoreRidotto || uFinalDen !== q.denominatoreRidotto) {
+        if (uFinalNum === q.numeratoreGrezzo && uFinalDen === q.denominatoreGrezzo && q.mcd > 1) {
+            errors.push(`La frazione ${uFinalNum}/${uFinalDen} non è ridotta ai minimi termini. Semplifica dividendo per il M.C.D. (${q.mcd}).`);
+        } else {
+            errors.push("La frazione finale ridotta non risulta corretta.");
+        }
+    }
+
+    // ESITO
+    if (errors.length === 0) {
+        fb.className = 'feedback-box correct';
+        fb.innerHTML = `🎉 <strong>ESATTO!</strong><br>La frazione generatrice ridotta ai minimi termini è: <strong>${q.numeratoreRidotto}/${q.denominatoreRidotto}</strong>.`;
+        appState.solvedCount++;
+        appState.streak++;
+        saveProgress();
+    } else {
+        fb.className = 'feedback-box error';
+        fb.innerHTML = `🔍 <strong>Analisi degli errori:</strong><br><ul style="margin-left:20px;">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`;
+        appState.streak = 0;
+        saveProgress();
+    }
+}
+
+function toggleHint() {
+    const hintBox = document.getElementById('quiz-hint-box');
+    const hintText = document.getElementById('quiz-hint-text');
+    const q = appState.currentQuiz.parsed;
+
+    appState.hintStage++;
+    hintBox.style.display = 'block';
+
+    if (appState.hintStage === 1) {
+        hintText.innerHTML = `Identifica le cifre del periodo (${q.periodo ? `<span class="overline">${q.periodo}</span>` : 'assente'}) e dell'antiperiodo (${q.antiperiodo || 'assente'}).`;
+    } else if (appState.hintStage === 2) {
+        hintText.innerText = `Il denominatore grezzo contiene ${q.periodo.length} nove e ${q.antiperiodo.length} zeri ➔ ${q.denominatoreGrezzo}.`;
+    } else {
+        hintText.innerText = `Il M.C.D. necessario alla semplificazione della frazione è ${q.mcd}.`;
+    }
+}
+</script>
+
+</body>
+</html>
